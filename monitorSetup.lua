@@ -75,6 +75,7 @@ write(" ")
 sleep(0.1)
 n = n + 1
 end
+end
 
 function installOS()
 shell.run("copy /disk/monitor /startup")
