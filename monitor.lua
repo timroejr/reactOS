@@ -16,64 +16,6 @@ mon2.clear()
 
 function printdata()
 
-local id2, mes2, pro2 = rednet.receive(turbineprotocol)
-term.redirect(mon3)
-term.clear()
-mon3.setTextScale(1)
-term.setCursorPos(1,1)
-if mes2 == false then
-write("STATUS: ")
-mon3.setBackgroundColour(colors.red)
-write("ERROR")
-mon3.setBackgroundColour(colors.black)
-print()
-mon3.setBackgroundColour(colors.blue)
-print()
-print("Something is wrong with the program or turbine setup")
-print("Press Ctrl+T to terminal program")
-mon3.setBackgroundColour(colors.black)
-else
-write("STATUS: ")
-if mes2.active == true then
-mon3.setBackgroundColour(colors.lime)
-write("ACTIVE")
-elseif mes2.active == false then
-mon3.setBackgroundColour(colors.red)
-write("OFFLINE")
-end
-
-if mes2.inductorEngaged == true then
-mon3.setBackgroundColour(colors.lime)
-print("Inductor Engaged:   ACTIVE")
-mon3.setBackgroundColour(colors.black)
-else
-mon3.setBackgroundColour(colors.red)
-print("Inductor Engaged:   DISABLED")
-mon3.setBackgroundColour(colors.black)
-end
-
-mon3.setBackgroundColour(colors.black)
-print()
-print()
-print("Energy Production: " .. math.floor(mes2.energyProduced, 0) .. " RF/t")
-print("Energy Stored:     " .. mes2.energyStored .. " RF")
-print("Max Flow Rate:     " .. mes2.maxFlowRate .. " mB/t")
-print()
-
-if mes2.rotorSpeed > 1900 then
-mon2.setBackgroundColour(colors.red)
-print("Rotor Speed:       " .. mes2.rotorSpeed .. " RPM")
-mon2.setBackgroundColour(colors.black)
-else
-mon2.setBackgroundColour(colors.lime)
-print("Rotor Speed:       " .. mes2.rotorSpeed .. " RPM")
-mon2.setBackgroundColour(colors.black)
-end
-end
-
-
-
-
 local id, mes, pro = rednet.receive(dataprotocol)
 term.redirect(mon)
 term.clear()
@@ -200,6 +142,66 @@ sleep(0.11)
 end
 
 
+function turbinePrintData() 
+
+local id2, mes2, pro2 = rednet.receive(turbineprotocol)
+term.redirect(mon3)
+term.clear()
+mon3.setTextScale(1)
+term.setCursorPos(1,1)
+if mes2 == false then
+write("STATUS: ")
+mon3.setBackgroundColour(colors.red)
+write("ERROR")
+mon3.setBackgroundColour(colors.black)
+print()
+mon3.setBackgroundColour(colors.blue)
+print()
+print("Something is wrong with the program or turbine setup")
+print("Press Ctrl+T to terminal program")
+mon3.setBackgroundColour(colors.black)
+else
+write("STATUS: ")
+if mes2.active == true then
+mon3.setBackgroundColour(colors.lime)
+write("ACTIVE")
+elseif mes2.active == false then
+mon3.setBackgroundColour(colors.red)
+write("OFFLINE")
+end
+
+if mes2.inductorEngaged == true then
+mon3.setBackgroundColour(colors.lime)
+print("Inductor Engaged:   ACTIVE")
+mon3.setBackgroundColour(colors.black)
+else
+mon3.setBackgroundColour(colors.red)
+print("Inductor Engaged:   DISABLED")
+mon3.setBackgroundColour(colors.black)
+end
+
+mon3.setBackgroundColour(colors.black)
+print()
+print()
+print("Energy Production: " .. math.floor(mes2.energyProduced, 0) .. " RF/t")
+print("Energy Stored:     " .. mes2.energyStored .. " RF")
+print("Max Flow Rate:     " .. mes2.maxFlowRate .. " mB/t")
+print()
+
+if mes2.rotorSpeed > 1900 then
+mon2.setBackgroundColour(colors.red)
+print("Rotor Speed:       " .. mes2.rotorSpeed .. " RPM")
+mon2.setBackgroundColour(colors.black)
+else
+mon2.setBackgroundColour(colors.lime)
+print("Rotor Speed:       " .. mes2.rotorSpeed .. " RPM")
+mon2.setBackgroundColour(colors.black)
+end
+end
+end
+
+
+
 function sendpower()
 
 local event, par1, tx, ty = os.pullEvent()
@@ -234,5 +236,5 @@ end
 
 
 while true do
-parallel.waitForAny(printdata,sendpower)
+parallel.waitForAny(printdata,turbinePrintData,sendpower)
 end
