@@ -34,6 +34,7 @@ print("Press Ctrl+T to terminal program")
 mon3.setBackgroundColour(colors.black)
 else
 write("STATUS: ")
+if mes2.active == true then
 mon3.setBackgroundColour(colors.lime)
 write("ACTIVE")
 elseif mes2.active == false then
@@ -67,6 +68,7 @@ else
 mon2.setBackgroundColour(colors.lime)
 print("Rotor Speed:       " .. mes2.rotorSpeed .. " RPM")
 mon2.setBackgroundColour(colors.black)
+end
 end
 
 
