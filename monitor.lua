@@ -169,7 +169,8 @@ elseif mes2.active == false then
 mon3.setBackgroundColour(colors.red)
 write("OFFLINE")
 end
-
+print()
+print()
 if mes2.inductorEngaged == true then
 mon3.setBackgroundColour(colors.lime)
 print("Inductor Engaged:   ACTIVE")
@@ -189,13 +190,13 @@ print("Max Flow Rate:     " .. mes2.maxFlowRate .. " mB/t")
 print()
 
 if mes2.rotorSpeed > 1900 then
-mon2.setBackgroundColour(colors.red)
-print("Rotor Speed:       " .. mes2.rotorSpeed .. " RPM")
-mon2.setBackgroundColour(colors.black)
+mon3.setBackgroundColour(colors.red)
+print("Rotor Speed:       " .. string.format("%.2f",mes2.rotorSpeed) .. " RPM")
+mon3.setBackgroundColour(colors.black)
 else
-mon2.setBackgroundColour(colors.lime)
-print("Rotor Speed:       " .. mes2.rotorSpeed .. " RPM")
-mon2.setBackgroundColour(colors.black)
+mon3.setBackgroundColour(colors.lime)
+print("Rotor Speed:       " .. string.format("%.2f",mes2.rotorSpeed) .. " RPM")
+mon3.setBackgroundColour(colors.black)
 end
 end
 end
