@@ -7,9 +7,71 @@ local monx ,mony = mon.getSize()
 local mon2 = peripheral.wrap("bottom") -- fuel indicator
 local mon2x ,mon2y = mon2.getSize()
 
+local mon3 = peripheral.wrap("left")
+local mon3x, mon3y = mon3.getSize()
+local turbineprotocol = "turbine" -- turbine protocol
+local turbinePower = "turbinePower"
+
 mon2.clear()
 
 function printdata()
+
+local id2, mes2, pro2 = rednet.receive(turbineprotocol)
+term.redirect(mon3)
+term.clear()
+mon3.setTextScale(1)
+term.setCursorPos(1,1)
+if mes2 == false then
+write("STATUS: ")
+mon3.setBackgroundColour(colors.red)
+write("ERROR")
+mon3.setBackgroundColour(colors.black)
+print()
+mon3.setBackgroundColour(colors.blue)
+print()
+print("Something is wrong with the program or turbine setup")
+print("Press Ctrl+T to terminal program")
+mon3.setBackgroundColour(colors.black)
+else
+write("STATUS: ")
+mon3.setBackgroundColour(colors.lime)
+write("ACTIVE")
+elseif mes2.active == false then
+mon3.setBackgroundColour(colors.red)
+write("OFFLINE")
+end
+
+if mes2.inductorEngaged == true then
+mon3.setBackgroundColour(colors.lime)
+print("Inductor Engaged:   ACTIVE")
+mon3.setBackgroundColour(colors.black)
+else
+mon3.setBackgroundColour(colors.red)
+print("Inductor Engaged:   DISABLED")
+mon3.setBackgroundColour(colors.black)
+end
+
+mon3.setBackgroundColour(colors.black)
+print()
+print()
+print("Energy Production: " .. math.floor(mes2.energyProduced, 0) .. " RF/t")
+print("Energy Stored:     " .. mes2.energyStored .. " RF")
+print("Max Flow Rate:     " .. mes2.maxFlowRate .. " mB/t")
+print()
+
+if mes2.rotorSpeed > 1900 then
+mon2.setBackgroundColour(colors.red)
+print("Rotor Speed:       " .. mes2.rotorSpeed .. " RPM")
+mon2.setBackgroundColour(colors.black)
+else
+mon2.setBackgroundColour(colors.lime)
+print("Rotor Speed:       " .. mes2.rotorSpeed .. " RPM")
+mon2.setBackgroundColour(colors.black)
+end
+
+
+
+
 local id, mes, pro = rednet.receive(dataprotocol)
 term.redirect(mon)
 term.clear()
