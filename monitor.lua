@@ -229,6 +229,17 @@ function sendpower()
 local event, par1, tx, ty = os.pullEvent()
 if event == "monitor_touch"  then
 
+if par1 == "left" then
+
+
+if tx < 8 and ty == 12 or tx < 8 and ty == 13 then
+rednet.broadcast("turbinepower", turbinePower)
+
+elseif tx > 9 or tx < 20 and ty == 12 or ty == 13 then
+rednet.broadcast("coilengage", turbinePower)
+end
+end
+
 if tx == 8 or tx == 9 and ty == 16 then
 rednet.broadcast("zero",powerprotocol)
 
@@ -256,20 +267,7 @@ end
 end
 end
 
-function sendturbineCommand()
-local event, par1, tx, ty = os.pullEvent()
-if event == "monitor_touch" and par1 == "left" then
-
-if tx < 8 and ty == 12 or tx < 8 and ty == 13 then
-rednet.broadcast("turbinepower", turbinePower)
-
-elseif tx > 9 or tx < 20 and ty == 12 or ty == 13 then
-rednet.broadcast("coilengage", turbinePower)
-end
-end
-end
-
 
 while true do
-parallel.waitForAny(printdata,turbinePrintData,sendpower,sendturbineCommand)
+parallel.waitForAny(printdata,turbinePrintData,sendpower)
 end
