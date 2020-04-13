@@ -198,6 +198,27 @@ mon3.setBackgroundColour(colors.lime)
 print("Rotor Speed:       " .. string.format("%.2f",mes2.rotorSpeed) .. " RPM")
 mon3.setBackgroundColour(colors.black)
 end
+
+print()
+mon3.setBackgroundColour(colors.orange)
+write(" POWER  ")
+mon3.setBackgroundColour(colors.black)
+write(" ")
+mon3.setBackgroundColour(colors.orange)
+write("  Engage  ")
+mon3.setBackgroundColour(colors.black)
+write(" ")
+print()
+mon3.setBackgroundColour(colors.orange)
+write(" SWITCH ") 
+mon3.setBackgroundColour(colors.black)
+write(" ")
+mon3.setBackgroundColour(colors.orange)
+write("  Coils   ")
+mon3.setBackgroundColour(colors.black)
+write(" ")
+print()
+
 end
 end
 
@@ -235,7 +256,20 @@ end
 end
 end
 
+function sendturbineCommand()
+local event, par1, tx, ty = os.pullEvent()
+if event == "monitor_touch" and par1 == "left" then
+
+if tx < 8 and ty == 12 or tx < 8 and ty == 13 then
+rednet.broadcast("turbinepower", turbinePower)
+
+elseif tx > 9 or tx < 20 and ty == 12 or ty == 13 then
+rednet.broadcast("coilengage", turbinePower)
+end
+end
+end
+
 
 while true do
-parallel.waitForAny(printdata,turbinePrintData,sendpower)
+parallel.waitForAny(printdata,turbinePrintData,sendpower,sendturbineCommand)
 end
