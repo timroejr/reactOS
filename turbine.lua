@@ -38,9 +38,25 @@ end
 end
 end
 
+function turbineget()
+local id, mes, pro = rednet.receive(turbinePower, 0.1)
+if mes == "turbinepower" then
+if turbine.getActive() == true then
+turbine.setActive(false)
+elseif turbine.getActive() == false then
+turbine.setActive(true)
+end
+elseif mes == "coilengage" then
+if turbine.getInductorEngaged() == true then
+turbine.setInductorEngaged(false)
+elseif turbine.getInductorEngaged() == false then
+turbine.setInductorEngaged(true)
+end
+end
+end
 
 
 while true do
-parallel.waitForAll(turbineRec, turbineSend)
+parallel.waitForAll(turbineRec, turbineSend, turbineget)
 end
 
